@@ -81,7 +81,7 @@ extern "C" {
 ```
 ### With namespace
 ```rust
-// Import function "import_fn" module/namespace "foo"
+// Import function "import_fn" from module/namespace "foo"
 #[link(wasm_import_module = "namespace_foo")]
 extern "C" {
     fn import_foo() -> i32;
