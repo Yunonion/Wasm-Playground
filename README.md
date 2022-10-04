@@ -3,13 +3,13 @@
 ### **Reference table**
 <br/>
 
-1. [Before getting started](##Before-getting-started)
-2. [Compiling](##Compiling)
-3. [Exporting Functions](##Exporting-Functions)
-4. [Importing functions](##Importing-functions)
-5. [Exporting Tables](##Exporing-Tables)
-6. [Custom sections](##Custom-sections)
-7. [Limitations](##Limitations)
+1. [Before getting started](#Before-getting-started)
+2. [Compiling](#Compiling)
+3. [Exporting Functions](#Exporting-Functions)
+4. [Importing functions](#Importing-functions)
+5. [Exporting Tables](#Exporing-Tables)
+6. [Custom sections](#Custom-sections)
+7. [Limitations](#Limitations)
 <br/>
 
 ## Before getting started
