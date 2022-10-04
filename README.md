@@ -131,6 +131,7 @@ pub unsafe fn fnptrs(cond: i32) -> i32{
 #[link_section = "Custom_Section_foo"]
 pub static CUSTOMSECTIONFOO: () =();
 ```
+
 **Possible use case for custom sections:**
 - can be use "metadata programming"
 - can be use to post process wasm file
@@ -138,6 +139,10 @@ pub static CUSTOMSECTIONFOO: () =();
 - can be use metadata to schedule a function exectuion
 - can be use metadata to run undercertain condition
 
+**NOTE:** There is currently an [issues](https://github.com/rust-lang/rust/issues/56639) relating to dependency
+TODO: Research issue :(
+
 ## **Limitations**
 - unable to use type externref :(
 - unable to control table exports
+- issues with [custom sections](https://github.com/rust-lang/rust/issues/56639)
