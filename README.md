@@ -67,7 +67,7 @@ cargo build --target=wasm32-wasi
 ```rust
 #[no_mangle]
 pub fn foo(){
-  // Do SomthingCustom sections
+  // Do Somthing
 }
 
 ```
