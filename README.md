@@ -35,7 +35,7 @@ sudo apt install wabt
 ```sh
 sudo dnf install wabt
 ```
-**ARCH**Possible use case for custom sections
+**ARCH**
 ```
 sudo yay -S wabt
 ```
