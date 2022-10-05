@@ -11,6 +11,9 @@ pub fn foo() {}
 // import function "import_fn" module/namespace "foo"
 #[link(wasm_import_module = "namespace_foo")]
 extern "C" {
+    // IMPORTANT: #[no_mangle] to disable standard symbol
+    #[allow(unused_attributes)]
+    #[no_mangle]
 	fn import_foo() -> i32;
 
 }
@@ -38,10 +41,7 @@ const FNPTRS: [unsafe extern "C" fn() ->i32; 2] = [import_foo, fn_bar];
 
 #[no_mangle]
 pub unsafe extern "C" fn fn_bar() -> i32 {0} //
-// **with Exporting tables enable**
-// ```sh
-//  RUSTFLAGS="-C link-arg=--export-table" cargo b --target=wasm32-unknown-unknown
-// ```
+
 #[no_mangle]
 pub unsafe fn fnptrs(cond: i32) -> i32{
 	FNPTRS[cond as usize ]()
