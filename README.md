@@ -3,7 +3,7 @@
 <br>
 
 ### **Reference table**
----
+
 
 1. [Before getting started](#Before-getting-started)
 2. [Compiling](#Compiling)
@@ -18,7 +18,7 @@
 <br>
 
 ## Before getting started
----
+
 Install [rust and cargo](https://www.rust-lang.org/)
 
 ㅤ1\. Install wasm targets
@@ -67,7 +67,7 @@ cmake --build .
 <br>
 
 ## **Compiling**
----
+
 **with wasm32-unknown-unknown architecture**
 ```sh
 cargo build --target=wasm32-unknown-unknown
@@ -79,7 +79,7 @@ cargo build --target=wasm32-wasi
 
 
 ## **Exporting functions**
----
+
 ```rust
 #[no_mangle]
 pub fn foo(){
@@ -88,7 +88,7 @@ pub fn foo(){
 
 ```
 ## **Importing functions**
----
+
 **Basic**
 ```rust
 extern "C" {
@@ -118,7 +118,7 @@ pub fn import(){
 ```
 
 ## **Exporting Tables**
----
+
 **IMPORTANT:** this will not export functions pointers unless built with RUSTFLAGS="-C link-arg=--export-table"
 
 **EXAMPLE**
@@ -150,7 +150,7 @@ pub unsafe fn fnptrs(cond: i32) -> i32{
 } 
 ```
 ## **Custom sections**
----
+
 ```rust
 #[used]
 #[link_section = "Custom_Section_foo"]
@@ -172,13 +172,13 @@ TODO: Research issue :(
 <br>
 
 ## **Limitations**
----
+
 - unable to use type externref :(
 - unable to control table exports [(Possible work around)](#Possible-use-case-for-custom-sections:)
 - issues with [custom sections](https://github.com/rust-lang/rust/issues/56639)
 
 ## **Debuging tips and notes**
----
+
 - wasm2wat is your favourite debug tool you have no choice >:).
 - In doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
 - use wasm-objdump $PATH_TO_WASM_BINARY -h to view custom sections.
