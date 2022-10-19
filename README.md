@@ -4,13 +4,13 @@
 
 ### **Reference table**
 
-
 1. [Before getting started](#Before-getting-started)
 2. [Compiling](#Compiling)
 3. [Exporting Functions](#Exporting-Functions)
 4. [Importing functions](#Importing-functions)
 5. [Exporting Tables](#Exporing-Tables)
 6. [Custom sections](#Custom-sections)
+7. [component model (in progress)](#component-model)
 7. [Limitations](#Limitations)
 8. [Debuging tips/notes](#Debuging-tips-and-notes)
 9. [Other Resources](#Other-Resources)
@@ -169,6 +169,14 @@ pub static CUSTOMSECTIONFOO: () =();
 
 TODO: Research issue :(
 
+# **Component Model**
+ Currently the Component Model Proposal is **in progress** but solves these main issues/introduce concept:
+  - way to define types
+  - An Abi
+  - Module and component linking: dynamically composing modules into components. 
+ [more info](https://www.fermyon.com/blog/webassembly-component-model)
+
+
 <br>
 
 ## **Limitations**
@@ -182,6 +190,7 @@ TODO: Research issue :(
 - wasm2wat is your favourite debug tool you have no choice >:).
 - In doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
 - use wasm-objdump $PATH_TO_WASM_BINARY -h to view custom sections.
+
 
 <br/>
 
