@@ -6,15 +6,6 @@
 #[cfg(not(target_family = "wasm"))]
 compile_error!("Not supported Architecture use cargo build --target=wasm32-wasi");
 
-#[cfg(all(not(test), small))]
-use core::panic::PanicInfo;
-
-#[cfg(all(not(test), small))]
-#[panic_handler]
-fn panic(_: &PanicInfo) -> ! {
-    loop {}
-}
-
 // # Exporting/importing functions
 #[no_mangle]
 pub fn foo() {}
@@ -38,6 +29,11 @@ pub unsafe fn import() {
 }
 
 // # Function pointer/wasm table
+// NOTES: Requires "-C link-arg=--export-table" rust flag to export table
+// quick and dirty way
+// ```sh
+// RUSTFLAGS="-C link-arg=--export-table" cargo b
+// ````
 #[no_mangle]
 pub fn fn_bar() -> i32 {
     0
@@ -60,3 +56,12 @@ pub static CUSTOMSECTIONFOO: [u8; 11] = *b"Hello World";
 //  - can be use metadata to create function with param externref type
 //  - can be use metadata to schedule a function exectuion
 //  - can be use metadata to run undercertain condition
+
+#[cfg(all(not(test), small))]
+use core::panic::PanicInfo;
+
+#[cfg(all(not(test), small))]
+#[panic_handler]
+fn panic(_: &PanicInfo) -> ! {
+    loop {}
+}

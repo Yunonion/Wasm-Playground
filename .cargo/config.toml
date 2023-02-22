@@ -1,0 +1,3 @@
+# Uncomment me for exporting tables
+# [target.wasm32-unknown-unknown]
+# rustflags = ["-C","link-arg=--export-table"]

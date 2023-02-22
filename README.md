@@ -4,16 +4,17 @@
 
 ### **Reference table**
 
-1. [Before getting started](#Before-getting-started)
-2. [Compiling](#Compiling)
-3. [Exporting Functions](#Exporting-Functions)
-4. [Importing functions](#Importing-functions)
-5. [Exporting Tables](#Exporing-Tables)
-6. [Custom sections](#Custom-sections)
-7. [component model (in progress)](#component-model)
-7. [Limitations](#Limitations)
-8. [Debuging tips/notes](#Debuging-tips-and-notes)
-9. [Other Resources](#Other-Resources)
+ 1. [Before getting started](#Before-getting-started)
+ 2. [Compiling](#Compiling)
+ 3. [Exporting Functions](#Exporting-Functions)
+ 4. [Importing functions](#Importing-functions)
+ 5. [Exporting Tables](#Exporing-Tables)
+ 6. [Custom sections](#Custom-Sections)
+ 7. [component model (in progress)](#component-model)
+ 8. [Reducing wasm binary size](#Small-Binary)
+ 9. [Limitations](#Limitations)
+10. [Debuging tips/notes](#Debuging-tips-and-notes)
+11. [Other Resources](#Other-Resources)
 
 <br>
 
@@ -117,7 +118,12 @@ pub fn import(){
 
 ```
 
-## **Exporting Tables**
+## **Exporting Tables** 
+Exporting table Quick and dirty way.
+```sh
+RUSTFLAGS="-C link-arg=--export-table" cargo b
+````
+
 ```rust
 // # Function pointer/wasm table
 #[no_mangle]
@@ -129,8 +135,19 @@ pub fn fn_bar() -> i32 {
 #[no_mangle]
 pub static FNPTRS: [fn() -> i32; 1] = [fn_bar];
 ```
+<br>
 
-## **Custom sections**
+cargo require the flags to export tables 
+```sh
+RUSTFLAGS="-C link-arg=--export-table" 
+```
+optionaly you can add this to $PROJECT_FOLDER/.cargo/config.toml
+
+```toml
+$PROJECTFOLDER/.cargo/config.toml[target.wasm32-unknown-unknown]
+rustflags = ["-C","link-arg=--export-table"]
+```
+## **Custom Sections**
 
 ```rust
 #[used]
@@ -162,6 +179,19 @@ TODO: Research issue :(
   - Module and component linking: dynamically composing modules into components. 
  [more info](https://www.fermyon.com/blog/webassembly-component-model)
 
+# **Small Binary**
+
+1. add this to cargo.toml 
+```toml
+[profile.release]
+opt-level = 'z'
+panic = "abort"
+strip = true
+lto = true
+```
+2. use wasm-strip to reduce binary size
+
+3. add #![no-std] attribute
 
 <br>
 
@@ -173,7 +203,6 @@ TODO: Research issue :(
 ## **Debuging tips and notes**
 - When in doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
 - Use i32 value for less code generation
-
 
 <br/>
 

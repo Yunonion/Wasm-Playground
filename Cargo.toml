@@ -13,11 +13,12 @@ crate-type = ["cdylib"]
 [features]
 small = []
 
+# Comment me for bigger binary size
 [profile.dev]
 opt-level = 'z'
-# panic = "abort"
 lto = true
 
+# Comment me for bigger binary size
 [profile.release]
 opt-level = 'z'
 panic = "abort"
