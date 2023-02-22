@@ -144,7 +144,8 @@ RUSTFLAGS="-C link-arg=--export-table"
 optionaly you can add this to $PROJECT_FOLDER/.cargo/config.toml
 
 ```toml
-$PROJECTFOLDER/.cargo/config.toml[target.wasm32-unknown-unknown]
+// $PROJECTFOLDER/.cargo/config.toml
+[target.wasm32-unknown-unknown]
 rustflags = ["-C","link-arg=--export-table"]
 ```
 ## **Custom Sections**
