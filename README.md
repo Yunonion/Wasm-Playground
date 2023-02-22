@@ -21,7 +21,7 @@
 
 Install [rust and cargo](https://www.rust-lang.org/)
 
-ㅤ1\. Install wasm targets
+1\. Install wasm targets
 
 <details>
 <summary> 2. Install wasm targets</summary>
@@ -35,20 +35,21 @@ rustup target add wasm32-unknown-unknown
 ```
 </details>
 
-<details><summary>3. Optional: Install wasm debug utils (wabt)</summary>
+<details><summary>3. Optional: Install wasm debug utils (wabt) and llvm</summary>
 
 **Debian**
 ```sh
-sudo apt install wabt
+sudo apt install wabt llvm-15-dev
 ```
 **Fedora**
 ```sh
-sudo dnf install wabt
+sudo dnf install wabt llvm-15-dev
 ```
 **ARCH**
+```sh
+sudo yay -S wabt llvm-15-dev
 ```
-sudo yay -S wabt
-```
+
 **Source**
 ```sh
 git clone --recursive https://github.com/WebAssembly/wabt
@@ -61,7 +62,6 @@ cmake ..
 cmake --build .
 
 ```
-
 </details>
 
 <br>
@@ -98,7 +98,7 @@ extern "C" {
 ```
 **With namespace**
 ```rust
-// Import function "import_fn" from module/namespace "foo"
+// Import function "import_fn" from module/namespace "namespace_foo"
 #[link(wasm_import_module = "namespace_foo")]
 extern "C" {
     fn import_foo() -> i32;
@@ -118,44 +118,30 @@ pub fn import(){
 ```
 
 ## **Exporting Tables**
-
-**IMPORTANT:** this will not export functions pointers unless built with RUSTFLAGS="-C link-arg=--export-table"
-
-**EXAMPLE**
-
-```sh
- # In terminal use
- RUSTFLAGS="-C link-arg=--export-table" cargo b --target=wasm32-unknown-unknown
-```
-**NOTE:** will export all function pointer
-
 ```rust
-// In rust file
-
-const FNPTRS: [unsafe extern "C" fn() ->i32; 2] = [import_foo, fn_bar];
-
+// # Function pointer/wasm table
 #[no_mangle]
-pub unsafe extern "C" fn fn_bar() -> i32 {0}
-
-// Using: #[no_mangle] to disable standard symbol
-// NOTE: this will emit a compile warning and will be depreciated in future rust versions
-extern "C" {
-  #[no_mangle]
-  fn import_foo() -> i32;
+pub fn fn_bar() -> i32 {
+    0
 }
 
+#[used]
 #[no_mangle]
-pub unsafe fn fnptrs(cond: i32) -> i32{
-    FNPTRS[cond as usize ]()
-} 
+pub static FNPTRS: [fn() -> i32; 1] = [fn_bar];
 ```
+
 ## **Custom sections**
 
 ```rust
 #[used]
 #[link_section = "Custom_Section_foo"]
-pub static CUSTOMSECTIONFOO: () =();
+pub static CUSTOMSECTIONFOO: [u8; 11] = *b"Hello World";
 ```
+Extracting custom section data in terminal
+
+````sh
+  llvm-objdump -s -j Custom_Section_foo $PATH_TO_WASM FILE
+````
 
 #### **Possible use case for custom sections:**
 - can be use to do something similiar to [metadata programming](https://stackoverflow.com/questions/514644/what-exactly-is-metaprogramming)

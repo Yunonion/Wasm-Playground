@@ -9,3 +9,17 @@ edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
+
+[features]
+small = []
+
+[profile.dev]
+opt-level = 'z'
+# panic = "abort"
+lto = true
+
+[profile.release]
+opt-level = 'z'
+panic = "abort"
+strip = true
+lto = true

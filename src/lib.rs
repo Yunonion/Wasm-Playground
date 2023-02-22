@@ -1,8 +1,19 @@
-//! 
-//! Compiling wasm from rust 
-//! 
-#[cfg(not(target_family="wasm"))]
+#![no_main]
+#![cfg_attr(small, feature(no_std))]
+//!
+//! Compiling wasm from rust
+//!
+#[cfg(not(target_family = "wasm"))]
 compile_error!("Not supported Architecture use cargo build --target=wasm32-wasi");
+
+#[cfg(all(not(test), small))]
+use core::panic::PanicInfo;
+
+#[cfg(all(not(test), small))]
+#[panic_handler]
+fn panic(_: &PanicInfo) -> ! {
+    loop {}
+}
 
 // # Exporting/importing functions
 #[no_mangle]
@@ -14,47 +25,36 @@ extern "C" {
     // IMPORTANT: #[no_mangle] to disable standard symbol
     #[allow(unused_attributes)]
     #[no_mangle]
-	fn import_foo() -> i32;
+    pub fn import_foo() -> i32;
 
 }
 
-// IMPORTANT: 
-// Must use **import function** otherwise compilier 
+// IMPORTANT:
+// Must use **import function** otherwise compilier
 // will optimise it away
 #[no_mangle]
-pub unsafe fn import(){
-	drop(import_foo())
-} 
-
-//
-
-
-// # Function pointer/wasm table
-// IMPORTANT: this will not export functions pointers
-// UNLESS: built with RUSTFLAGS="-C link-arg=--export-table"
-// EXAMPLE:
-//  in terminal use
-// ```
-// RUSTFLAGS="-C link-arg=--export-table" cargo b --target=wasm32-unknown-unknown
-// ```
-const FNPTRS: [unsafe extern "C" fn() ->i32; 2] = [import_foo, fn_bar];
-
-#[no_mangle]
-pub unsafe extern "C" fn fn_bar() -> i32 {0} //
-
-#[no_mangle]
-pub unsafe fn fnptrs(cond: i32) -> i32{
-	FNPTRS[cond as usize ]()
+pub unsafe fn import() {
+    import_foo();
 }
 
-//
+// # Function pointer/wasm table
+#[no_mangle]
+pub fn fn_bar() -> i32 {
+    0
+}
 
-// Custom sections**with Exporting tables enable**
+#[used]
+#[no_mangle]
+pub static FNPTRS: [fn() -> i32; 1] = [fn_bar];
+
+// Custom sections
+// Viewing custom section's value
+// llvm-objdump-15 -s -j Custom_Section_foo  ./target/wasm32-unknown-unknown/debug/wasm_playground.wasm
 #[used]
 #[link_section = "Custom_Section_foo"]
-pub static CUSTOMSECTIONFOO: () = ();
+pub static CUSTOMSECTIONFOO: [u8; 11] = *b"Hello World";
 
-// Possible use case for custom sections: 
+// Possible use case for custom sections:
 //  - can be use "metadata programming"
 //  - can be use to post process wasm file
 //  - can be use metadata to create function with param externref type
