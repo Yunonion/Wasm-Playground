@@ -166,16 +166,13 @@ TODO: Research issue :(
 <br>
 
 ## **Limitations**
-
+- Code generation is not guarantee
 - unable to use type externref :(
-- unable to control table exports [(Possible work around)](#Possible-use-case-for-custom-sections:)
 - issues with [custom sections](https://github.com/rust-lang/rust/issues/56639)
 
 ## **Debuging tips and notes**
-
-- wasm2wat is your favourite debug tool you have no choice >:).
-- In doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
-- use wasm-objdump $PATH_TO_WASM_BINARY -h to view custom sections.
+- When in doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
+- Use i32 value for less code generation
 
 
 <br/>
