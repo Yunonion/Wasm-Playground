@@ -13,14 +13,20 @@ crate-type = ["cdylib"]
 [features]
 small = []
 
-# Comment me for bigger binary size
+# Note: this is to help with readbility of wat files
 [profile.dev]
 opt-level = 'z'
 lto = true
+strip = false
 
-# Comment me for bigger binary size
-[profile.release]
-opt-level = 'z'
+# small binary size 
+#
+# ```sh`
+# cargo b --target=wasm32-wasi --profile small
+# ````
+[profile.small]
+inherits = "release"
+opt-level = 'z' # or 's'
 panic = "abort"
 strip = true
 lto = true
