@@ -11,10 +11,11 @@
  5. [Exporting Tables](#Exporing-Tables)
  6. [Custom sections](#Custom-Sections)
  7. [component model (in progress)](#component-model)
- 8. [Reducing wasm binary size](#Small-Binary)
- 9. [Limitations](#Limitations)
-10. [Debuging tips/notes](#Debuging-tips-and-notes)
-11. [Other Resources](#Other-Resources)
+ 8. [Rustflags](#Rustflags) 
+ 9. [Small Binary](#Small-Binary)
+10. [Limitations](#Limitations)
+11. [Authors tips/notes](#Authors-tips-and-notes)
+12. [Other Resources](#Other-Resources)
 
 <br>
 
@@ -168,11 +169,6 @@ Extracting custom section data in terminal
 - can use metadata to schedule a function exectuion
 - can use metadata to run undercertain condition/events
 
-
-**NOTE:** There is currently an [issues](https://github.com/rust-lang/rust/issues/56639) relating to dependency
-
-TODO: Research issue :(
-
 # **Component Model**
  Currently the Component Model Proposal is **in progress** but solves these main issues/introduce concept:
   - way to define types
@@ -180,12 +176,34 @@ TODO: Research issue :(
   - Module and component linking: dynamically composing modules into components. 
  [more info](https://www.fermyon.com/blog/webassembly-component-model)
 
+# **Rust flags**
+There are specific rustflags that enable specific wasm feature.
+
+## **Multi threading**
+**NOTE:** Multi-threading require to recomile the standard libary. [more information](https://rustwasm.github.io/docs/wasm-bindgen/examples/raytrace.html)
+```sh
+RUSTFLAGS='-C target-feature=+atomics,+bulk-memory' cargo b --target wasm32-unknown-unknown -Z build-std=panic_abort,std
+```
+## **EXPORTING TABLES**
+
+```sh
+RUSTFLAGS="-C link-arg=--export-table" cargo b
+```
+
 # **Small Binary**
+Quick and dirty:
+have look at [Cargo.toml](https://github.com/CloneSnows/Wasm-Playground/blob/main/Cargo.toml)
+and run
+
+```sh
+cargo b --target=wasm32-wasi --profile small --quiet 
+ls -lh ./target/wasm32-wasi/**/*.wasm
+```
 
 1. add this to cargo.toml 
 ```toml
 [profile.release]
-opt-level = 'z'
+opt-level = 'z' # or you can use 's' option
 panic = "abort"
 strip = true
 lto = true
@@ -201,9 +219,10 @@ lto = true
 - unable to use type externref :(
 - issues with [custom sections](https://github.com/rust-lang/rust/issues/56639)
 
-## **Debuging tips and notes**
+## **Authors tips and notes**
 - When in doubt make everything public (**pub**) and no mangling (**#[no_mangle]**) your code.
 - Use i32 value for less code generation
+- Using this guide may or may not correctly compile to wasm.
 
 <br/>
 
