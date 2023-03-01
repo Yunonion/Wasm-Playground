@@ -176,7 +176,7 @@ Extracting custom section data in terminal
   - Module and component linking: dynamically composing modules into components. 
  [more info](https://www.fermyon.com/blog/webassembly-component-model)
 
-# **Rust flags**
+# **Rustflags**
 There are specific rustflags that enable specific wasm feature.
 
 ## **Multi threading**
