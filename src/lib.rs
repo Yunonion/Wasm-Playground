@@ -1,5 +1,4 @@
 #![no_main]
-#![cfg_attr(small, feature(no_std))]
 //!
 //! Compiling wasm from rust
 //!
@@ -56,12 +55,3 @@ pub static CUSTOMSECTIONFOO: [u8; 11] = *b"Hello World";
 //  - can be use metadata to create function with param externref type
 //  - can be use metadata to schedule a function exectuion
 //  - can be use metadata to run undercertain condition
-
-#[cfg(all(not(test), small))]
-use core::panic::PanicInfo;
-
-#[cfg(all(not(test), small))]
-#[panic_handler]
-fn panic(_: &PanicInfo) -> ! {
-    loop {}
-}

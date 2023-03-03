@@ -196,7 +196,7 @@ have look at [Cargo.toml](https://github.com/CloneSnows/Wasm-Playground/blob/mai
 and run
 
 ```sh
-cargo b --target=wasm32-wasi --profile small --quiet 
+cargo b --target=wasm32-wasi --profile small --feature small --quiet 
 ls -lh ./target/wasm32-wasi/**/*.wasm
 ```
 
@@ -209,8 +209,6 @@ strip = true
 lto = true
 ```
 2. use wasm-strip to reduce binary size
-
-3. add #![no-std] attribute
 
 <br>
 
