@@ -27,7 +27,6 @@
   (global (;1;) i32 (i32.const 1048576))
   (export "memory" (memory 0))
   (export "FNPTRS" (global 1))
-  (export "__indirect_function_table" (table 0))
   (export "fn_bar" (func $fn_bar.command_export))
   (export "foo" (func $foo.command_export))
   (export "import" (func $import.command_export))
