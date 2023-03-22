@@ -1,4 +1,4 @@
-# Compiling Rust to wasm without wasm bindgen.
+# Compiling Rust to wasm the hard way.
 
 <br>
 
