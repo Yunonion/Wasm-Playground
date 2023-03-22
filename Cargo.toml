@@ -5,8 +5,6 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-
 [lib]
 crate-type = ["cdylib"]
 
@@ -15,8 +13,9 @@ small = []
 
 # Note: this is to help with readbility of wat files
 [profile.dev]
-opt-level = 'z'
+opt-level =  'z'
 lto = true
+debug = true
 strip = false
 
 # small binary size 
@@ -30,3 +29,4 @@ opt-level = 'z' # or 's'
 panic = "abort"
 strip = true
 lto = true
+

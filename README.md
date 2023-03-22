@@ -1,4 +1,4 @@
-# Compiling Rust to wasm without wasm-pack
+# Compiling Rust to wasm without wasm bindgen.
 
 <br>
 
@@ -10,13 +10,14 @@
  4. [Importing functions](#Importing-functions)
  5. [Exporting Tables](#Exporing-Tables)
  6. [Custom sections](#Custom-Sections)
- 7. [component model (in progress)](#component-model)
- 8. [Rustflags](#Rustflags) 
- 9. [Small Binary](#Small-Binary)
-10. [Limitations](#Limitations)
-11. [Authors tips/notes](#Authors-tips-and-notes)
-12. [Other Resources](#Other-Resources)
-
+ 7. [Simd Support](#Simd-Support)
+ 8. [component model (in progress)](#component-model)
+ 9. [Rustflags](#Rustflags) 
+10. [Small Binary](#Small-Binary)
+11. [Limitations](#Limitations)
+12. [Authors tips/notes](#Authors-tips-and-notes)
+13. [Credits](#Credits)
+14. [Other Resources](#Other-Resources)
 <br>
 
 ## Before getting started
@@ -169,6 +170,28 @@ Extracting custom section data in terminal
 - can use metadata to schedule a function exectuion
 - can use metadata to run undercertain condition/events
 
+# **Simd Support**
+ All credit goes to [nickbabcock](https://github.com/nickbabcock)
+ Examples is from https://nickb.dev/blog/authoring-a-simd-enhanced-wasm-library-with-rust/
+ Quick and dirty way
+ ```
+ RUSTFLAGS = "-C target-feature=+simd128" cargo build --target=wasm32-wasi
+ ```
+
+ Example:
+ ```rust
+ use core::arch::wasm32;
+ #[no_mangle]
+ #[target_feature(enablex = "simd128")]
+ pub fn _mm_mul_epu32(a: wasm32::v128, b: wasm32::v128) -> wasm32::v128 {
+     let mask = wasm32::u32x4(0xFFFF_FFFF, 0, 0xFFFF_FFFF, 0);
+     let lo_a_0 = wasm32::v128_and(a, mask);
+     let lo_b_0 = wasm32::v128_and(b, mask);
+     wasm32::u64x2_mul(lo_a_0, lo_b_0)
+ }
+ 
+ ```
+
 # **Component Model**
  Currently the Component Model Proposal is **in progress** but solves these main issues/introduce concept:
   - way to define types
@@ -224,9 +247,13 @@ lto = true
 
 <br/>
 
+## Credits
+simd supports: [nickbabcock](https://github.com/nickbabcock)
+
 ### **Other Resources** 
 - [Understanding WebAssembly text format](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format)
 - [WebAssembly Core Specification version 1](https://www.w3.org/TR/wasm-core-1/)
 - [WebAssembly Core Specification version 2](https://www.w3.org/TR/wasm-core-2/)
 - [Rust and WebAssembly](https://rustwasm.github.io/book/)
 - [Rust + Wasm issues](https://github.com/rust-lang/rust/labels/O-wasm)
+- [Authoring a SIMD enhanced Wasm library with Rust](https://nickb.dev/blog/authoring-a-simd-enhanced-wasm-library-with-rust/)
