@@ -16,7 +16,7 @@ pub fn foo() {}
 
 // import function "import_fn" module/namespace "foo"
 #[link(wasm_import_module = "namespace_foo")]
-extern "C" {
+extern {
     // IMPORTANT: #[no_mangle] to disable standard symbol
     #[allow(unused_attributes)]
     #[no_mangle]
