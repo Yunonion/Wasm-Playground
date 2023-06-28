@@ -103,7 +103,7 @@ extern "C" {
 ```rust
 // Import function "import_fn" from module/namespace "namespace_foo"
 #[link(wasm_import_module = "namespace_foo")]
-extern "C" {
+extern {
     fn import_foo() -> i32;
 }
 ```
@@ -117,7 +117,6 @@ extern "C" {
 pub fn import(){
 	drop(import_foo());
 }
-
 ```
 
 ## **Exporting Tables** 
@@ -251,6 +250,7 @@ lto = true
 simd supports: [nickbabcock](https://github.com/nickbabcock)
 
 ### **Other Resources** 
+- [Rust reference](https://doc.rust-lang.org/stable/reference/introduction.html)
 - [Understanding WebAssembly text format](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format)
 - [WebAssembly Core Specification version 1](https://www.w3.org/TR/wasm-core-1/)
 - [WebAssembly Core Specification version 2](https://www.w3.org/TR/wasm-core-2/)
